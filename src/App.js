@@ -1,23 +1,28 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
+import HoldingsTable from './components/HoldingsTable';
 
 function App() {
+  const [holdingsData, setHoldingsData] = useState([]);
+
+  useEffect(() => {
+    // Fetch holdings data from API
+    const fetchData = async () => {
+      try {
+        const response = await axios.get('https://api.example.com/holdings');
+        setHoldingsData(response.data);
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      }
+    };
+
+    fetchData();
+  }, []);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+    
+      <HoldingsTable holdingsData={holdingsData} />
     </div>
   );
 }
